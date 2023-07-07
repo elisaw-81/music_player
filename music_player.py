@@ -26,3 +26,35 @@ while running:
         pygame.mixer.music.play()
 
 pygame.quit()
+
+import pygame
+import os
+
+pygame.init()
+
+music_directory = r"C:\Users\mycomputer\Music"
+
+music_files = [file for file in os.listdir(music_directory) if file.endswith(".mp3")]
+
+current_track = 0
+pygame.mixer.init()
+
+def play_current_track():
+    pygame.mixer.music.load(os.path.join(music_directory, music_files[current_track]))
+    pygame.mixer.music.play()
+
+play_current_track()
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    if not pygame.mixer.music.get_busy():
+        # Move to the next track
+        current_track = (current_track + 1) % len(music_files)
+        # Play the next track
+        play_current_track()
+
+pygame.quit()
